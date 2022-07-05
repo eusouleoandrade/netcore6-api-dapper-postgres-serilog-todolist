@@ -6,7 +6,7 @@ namespace TodoList.Core.Domain.Entities
     {
         public string Title { get; private set; }
 
-        public bool Done { get; set; }
+        public bool Done { get; private set; }
 
         public Todo(int id, string title, bool done)
         {
