@@ -2,7 +2,7 @@ using TodoList.Core.Domain.Common;
 
 namespace TodoList.Core.Domain.Entities
 {
-    public class Todo : BaseEntity<int>, Notifiable
+    public class Todo : BaseEntity<int>
     {
         public string Title { get; private set; }
 
@@ -18,16 +18,13 @@ namespace TodoList.Core.Domain.Entities
         }
 
         public Todo(string title, bool done) : this(default, title, done)
-        {    
+        {
         }
 
         private void Validate()
         {
-            // Validate title
             if (string.IsNullOrWhiteSpace(Title))
-            {
-                
-            }
+                AddErrorNotification($"A propriedade {nameof(Title)} é requerida.");
         }
     }
 }
