@@ -13,18 +13,10 @@ namespace TodoList.Core.Domain.Entities
             Id = id;
             Title = title;
             Done = done;
-
-            Validate();
         }
 
         public Todo(string title, bool done) : this(default, title, done)
         {
-        }
-
-        private void Validate()
-        {
-            if (string.IsNullOrWhiteSpace(Title))
-                AddErrorNotification($"A propriedade {nameof(Title)} é requerida.");
         }
     }
 }
