@@ -20,6 +20,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public async Task<ActionResult<Response<List<TodoQuery>>>> Get()
         {
             var useCaseResponse = await _getAllTodoUseCase.RunAsync();
+
             return Ok(new Response<IReadOnlyList<TodoQuery>>(useCaseResponse, true));
         }
 
