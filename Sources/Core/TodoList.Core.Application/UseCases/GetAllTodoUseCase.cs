@@ -1,5 +1,5 @@
 using AutoMapper;
-using TodoList.Core.Application.Dtos.Models;
+using TodoList.Core.Application.Dtos.Queries;
 using TodoList.Core.Application.Interfaces.Repositories;
 using TodoList.Core.Application.Interfaces.UseCases;
 
@@ -17,9 +17,10 @@ namespace TodoList.Core.Application.UseCases
             _mapper = mapper;
         }
 
-        public async Task<IReadOnlyList<TodoModel>> RunAsync()
+        public async Task<IReadOnlyList<TodoQuery>> RunAsync()
         {
-            return  _mapper.Map<IReadOnlyList<TodoModel>>(await _todoRepositoryAsync.GetAllAsync());
+            var entities = await _todoRepositoryAsync.GetAllAsync();
+            return _mapper.Map<IReadOnlyList<TodoQuery>>(entities);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace TodoList.Infra.Persistence.Repositories
             _configuration = configuration;
 
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
             _connection = new NpgsqlConnection(connectionString);
         }
 
@@ -28,6 +29,6 @@ namespace TodoList.Infra.Persistence.Repositories
             => await _connection.GetAsync<TEntity>(id);
 
         public void Dispose()
-            => _connection.DisposeAsync();
+            => _connection?.DisposeAsync();
     }
 }

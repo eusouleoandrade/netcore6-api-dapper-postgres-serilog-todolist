@@ -1,5 +1,5 @@
 using AutoMapper;
-using TodoList.Core.Application.Dtos.Models;
+using TodoList.Core.Application.Dtos.Queries;
 using TodoList.Core.Domain.Entities;
 
 namespace TodoList.Core.Application.Mappings
@@ -8,7 +8,7 @@ namespace TodoList.Core.Application.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<Todo, TodoModel>();
+            CreateMap<Todo, TodoQuery>();
         }
     }
 }

@@ -4,9 +4,9 @@ using TodoList.Core.Domain.Entities;
 
 namespace TodoList.Infra.Persistence.Repositories
 {
-    public class TodoRepository : GenericRepositoryAsync<Todo, int>, ITodoRepositoryAsync
+    public class TodoRepositoryAsync : GenericRepositoryAsync<Todo, int>, ITodoRepositoryAsync
     {
-        public TodoRepository(IConfiguration configuration) : base(configuration)
+        public TodoRepositoryAsync(IConfiguration configuration) : base(configuration)
         {
         }
     }

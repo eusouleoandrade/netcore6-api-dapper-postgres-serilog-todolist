@@ -1,25 +1,26 @@
+using TodoList.Core.Application.Ioc;
+using TodoList.Infra.Persistence.Ioc;
+using TodoList.Presentation.WebApi.Extensions;
+
+// Configure services
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddPersistenceLayer();
+builder.Services.AddApplicationLayer();
+builder.Services.AddControllerExtension();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerExtension();
+builder.Services.AddApiVersioningExtension();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseDeveloperExceptionPage();
 
+app.UseSwaggerExtension();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
+app.UseStaticFiles();
 app.Run();

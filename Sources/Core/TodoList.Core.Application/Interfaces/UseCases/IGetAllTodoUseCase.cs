@@ -1,9 +1,9 @@
-using TodoList.Core.Application.Dtos.Models;
+using TodoList.Core.Application.Dtos.Queries;
 
 namespace TodoList.Core.Application.Interfaces.UseCases
 {
     public interface IGetAllTodoUseCase
     {
-        Task<IReadOnlyList<TodoModel>> RunAsync();
+        Task<IReadOnlyList<TodoQuery>> RunAsync();
     }
 }
