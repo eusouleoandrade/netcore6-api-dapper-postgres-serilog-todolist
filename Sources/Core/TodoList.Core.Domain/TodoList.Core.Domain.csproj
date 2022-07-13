@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Infra\TodoList.Infra.Notification\TodoList.Infra.Notification.csproj" />
   </ItemGroup>
 

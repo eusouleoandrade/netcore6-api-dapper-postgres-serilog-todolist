@@ -1,7 +1,9 @@
+using Dapper.Contrib.Extensions;
 using TodoList.Core.Domain.Common;
 
 namespace TodoList.Core.Domain.Entities
 {
+    [Table("Todo")]
     public class Todo : BaseEntity<int>
     {
         public string Title { get; private set; }

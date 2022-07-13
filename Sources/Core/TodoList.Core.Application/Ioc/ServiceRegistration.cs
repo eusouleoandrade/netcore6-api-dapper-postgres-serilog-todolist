@@ -11,6 +11,7 @@ namespace TodoList.Core.Application.Ioc
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IGetAllTodoUseCase, GetAllTodoUseCase>();
+            services.AddScoped<ICreateTodoUseCase, CreateTodoUseCase>();
         }
     }
 }

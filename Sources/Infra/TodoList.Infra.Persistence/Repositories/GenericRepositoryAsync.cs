@@ -9,26 +9,33 @@ namespace TodoList.Infra.Persistence.Repositories
         where TEntity : class
         where TId : struct
     {
-        private readonly IConfiguration _configuration;
-
-        private readonly NpgsqlConnection _connection;
+        protected readonly NpgsqlConnection _connection;
 
         public GenericRepositoryAsync(IConfiguration configuration)
         {
-            _configuration = configuration;
-
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             _connection = new NpgsqlConnection(connectionString);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
             => await _connection.GetAllAsync<TEntity>();
 
-        public async Task<TEntity> GetAsync(TId id)
+        public virtual async Task<TEntity> GetAsync(TId id)
             => await _connection.GetAsync<TEntity>(id);
 
+        public virtual async Task<int> InsertAsync(TEntity entity)
+            => await _connection.InsertAsync(entity);
+
         public void Dispose()
-            => _connection?.DisposeAsync();
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _connection?.Dispose();
+        }
     }
 }

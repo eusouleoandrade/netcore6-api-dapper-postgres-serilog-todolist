@@ -1,6 +1,6 @@
 ﻿namespace TodoList.Core.Application.Dtos.Queries
 {
-    public class TodoQuery
+    public class CreateTodoQuery
     {
         public int Id { get; private set; }
 
@@ -8,7 +8,7 @@
 
         public bool Done { get; private set; }
 
-        public TodoQuery(int id, string title, bool done)
+        public CreateTodoQuery(int id, string title, bool done)
         {
             Id = id;
             Title = title;

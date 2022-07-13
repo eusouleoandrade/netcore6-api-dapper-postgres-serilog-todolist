@@ -1,6 +1,6 @@
-﻿namespace TodoList.Core.Application.Dtos.Queries
+﻿namespace TodoList.Core.Application.Dtos.Responses
 {
-    public class TodoQuery
+    public class CreateTodoUseCaseResponse
     {
         public int Id { get; private set; }
 
@@ -8,7 +8,7 @@
 
         public bool Done { get; private set; }
 
-        public TodoQuery(int id, string title, bool done)
+        public CreateTodoUseCaseResponse(int id, string title, bool done)
         {
             Id = id;
             Title = title;

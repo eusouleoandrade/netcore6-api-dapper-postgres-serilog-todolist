@@ -4,7 +4,7 @@ namespace TodoList.Core.Application.Interfaces.UseCases
         where TRequest : class
         where TResponse : class
     {
-        Task<TResponse> RunAsync(TRequest request);
+        Task<TResponse?> RunAsync(TRequest request);
     }
 
     public interface IUseCase<TRequest>
