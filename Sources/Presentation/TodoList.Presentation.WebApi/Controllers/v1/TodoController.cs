@@ -35,7 +35,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
+        public async Task<ActionResult<Response<CreateTodoQuery, List<String>>>> Post([FromBody] CreateTodoRequest request)
         {
             var useCaseRequest = _mapper.Map<CreateTodoUseCaseRequest>(request);
             var useCaseResponse = await _createTodoUseCase.RunAsync(useCaseRequest);
@@ -43,6 +43,5 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
             return Created($"/api/v1/todo/{response.Id}", new Response<CreateTodoQuery>(response, true));
         }
-
     }
 }
