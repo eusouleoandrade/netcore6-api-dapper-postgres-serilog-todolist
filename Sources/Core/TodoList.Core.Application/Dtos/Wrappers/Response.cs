@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using TodoList.Infra.Notification.Models;
 
 namespace TodoList.Core.Application.Dtos.Wrappers
 {
@@ -72,9 +73,9 @@ namespace TodoList.Core.Application.Dtos.Wrappers
         public string? Message { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public IEnumerable<string> Errors { get; set; }
+        public IEnumerable<NotificationMessage>? Errors { get; set; }
 
-        public Response(bool succeeded, string? message, IEnumerable<string> errors)
+        public Response(bool succeeded, string? message = null, IEnumerable<NotificationMessage>? errors = null)
         {
             Succeeded = succeeded;
             Errors = errors;

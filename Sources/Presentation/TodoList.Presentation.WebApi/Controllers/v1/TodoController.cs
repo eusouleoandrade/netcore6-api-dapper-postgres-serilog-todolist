@@ -4,6 +4,8 @@ using TodoList.Core.Application.Dtos.Queries;
 using TodoList.Core.Application.Dtos.Requests;
 using TodoList.Core.Application.Dtos.Wrappers;
 using TodoList.Core.Application.Interfaces.UseCases;
+using TodoList.Infra.Notification.Contexts;
+using TodoList.Infra.Notification.Models;
 using TodoList.Presentation.WebApi.Controllers.Common;
 
 namespace TodoList.Presentation.WebApi.Controllers.v1
@@ -17,13 +19,17 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
         private readonly IMapper _mapper;
 
+        private readonly NotificationContext _notificationContext;
+
         public TodoController(IGetAllTodoUseCase getAllTodoUseCase,
             ICreateTodoUseCase createTodoUseCase,
-            IMapper mapper)
+            IMapper mapper,
+            NotificationContext notificationContext)
         {
             _getAllTodoUseCase = getAllTodoUseCase;
             _createTodoUseCase = createTodoUseCase;
             _mapper = mapper;
+            _notificationContext = notificationContext;
         }
 
         [HttpGet]
@@ -35,13 +41,18 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<CreateTodoQuery, List<String>>>> Post([FromBody] CreateTodoRequest request)
+        public async Task<ActionResult<Response<CreateTodoQuery, List<NotificationMessage>>>> Post([FromBody] CreateTodoRequest request)
         {
             var useCaseRequest = _mapper.Map<CreateTodoUseCaseRequest>(request);
             var useCaseResponse = await _createTodoUseCase.RunAsync(useCaseRequest);
+
+            if (_notificationContext.HasErrorNotification)
+                return BadRequest();
+
             var response = _mapper.Map<CreateTodoQuery>(useCaseResponse);
 
-            return Created($"/api/v1/todo/{response.Id}", new Response<CreateTodoQuery>(response, true));
+            return Created($"/api/v1/todo/{response.Id}",
+                new Response<CreateTodoQuery>(data: response, succeeded: true));
         }
     }
 }

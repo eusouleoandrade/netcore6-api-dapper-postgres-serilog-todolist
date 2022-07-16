@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Converters;
+using TodoList.Presentation.WebApi.Filters;
 
 namespace TodoList.Presentation.WebApi.Extensions
 {
@@ -7,7 +8,7 @@ namespace TodoList.Presentation.WebApi.Extensions
         public static void AddControllerExtension(this IServiceCollection services)
         {
             services
-                .AddControllers()
+                .AddControllers(options => options.Filters.Add<NotificationFilter>())
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.Converters.Add(new StringEnumConverter()));
         }

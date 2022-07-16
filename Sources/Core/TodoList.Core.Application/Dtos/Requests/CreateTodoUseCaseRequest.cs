@@ -1,8 +1,6 @@
-﻿using TodoList.Infra.Notification.Abstractions;
-
-namespace TodoList.Core.Application.Dtos.Requests
+﻿namespace TodoList.Core.Application.Dtos.Requests
 {
-    public class CreateTodoUseCaseRequest : Notifiable
+    public class CreateTodoUseCaseRequest
     {
         public string Title { get; private set; }
 
@@ -11,14 +9,6 @@ namespace TodoList.Core.Application.Dtos.Requests
         public CreateTodoUseCaseRequest(string title)
         {
             Title = title;
-
-            Validade();
-        }
-
-        private void Validade()
-        {
-            if (string.IsNullOrWhiteSpace(Title))
-                AddErrorNotification("Título é requerido");
         }
     }
 }
