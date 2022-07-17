@@ -5,11 +5,43 @@ using TodoList.Infra.Notification.Models;
 
 namespace TodoList.Infra.Notification.Abstractions
 {
-    public abstract class Notifiable : INotifiable, IDisposable
+    public abstract class Notifiable : Notifiable<NotificationMessage>
     {
-        private readonly List<NotificationMessage> _errorNotifications;
+        // Error notifications
+        public void AddErrorNotification(string key, string message)
+        {
+            _errorNotifications.Add(new NotificationMessage(key, message));
+        }
 
-        private readonly List<NotificationMessage> _successNotifications;
+        public void AddErrorNotification(string key, string message, params object[] parameters)
+            => _errorNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
+
+        public void AddErrorNotifications(params Notifiable[] objects)
+        {
+            foreach (Notifiable notifiable in objects)
+                _errorNotifications.AddRange(notifiable.ErrorNotifications);
+        }
+
+        // Success notifications
+        public void AddSuccessNotification(string key, string message)
+            => _successNotifications.Add(new NotificationMessage(key, message));
+
+        public void AddSuccessNotification(string key, string message, params object[] parameters)
+            => _successNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
+
+        public void AddSuccessNotifications(params Notifiable[] objects)
+        {
+            foreach (Notifiable notifiable in objects)
+                _successNotifications.AddRange(notifiable.ErrorNotifications);
+        }
+    }
+
+    public abstract class Notifiable<TNotificationMessage> : INotifiable<TNotificationMessage>, IDisposable
+        where TNotificationMessage : class
+    {
+        protected readonly List<TNotificationMessage> _errorNotifications;
+
+        protected readonly List<TNotificationMessage> _successNotifications;
 
         [NotMapped]
         [JsonIgnore]
@@ -21,62 +53,36 @@ namespace TodoList.Infra.Notification.Abstractions
 
         [NotMapped]
         [JsonIgnore]
-        public IReadOnlyList<NotificationMessage> ErrorNotifications => _errorNotifications;
+        public IReadOnlyList<TNotificationMessage> ErrorNotifications => _errorNotifications;
 
         [NotMapped]
         [JsonIgnore]
-        public IReadOnlyList<NotificationMessage> SuccessNotifications => _successNotifications;
+        public IReadOnlyList<TNotificationMessage> SuccessNotifications => _successNotifications;
 
         protected Notifiable()
         {
-            _errorNotifications = new List<NotificationMessage>();
-            _successNotifications = new List<NotificationMessage>();
+            _errorNotifications = new List<TNotificationMessage>();
+            _successNotifications = new List<TNotificationMessage>();
         }
 
         // Error notifications
-        public void AddErrorNotification(NotificationMessage notification)
+        public void AddErrorNotification(TNotificationMessage notification)
             => _errorNotifications.Add(notification);
 
-        public void AddErrorNotification(string key, string message)
-        {
-            _errorNotifications.Add(new NotificationMessage(key, message));
-        }
-
-        public void AddErrorNotification(string key, string message, params object[] parameters)
-            => _errorNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
-
-        public void AddErrorNotifications(IEnumerable<NotificationMessage> notifications)
+        public void AddErrorNotifications(IEnumerable<TNotificationMessage> notifications)
         {
             if (notifications.Any())
                 _errorNotifications.AddRange(notifications);
         }
 
-        public void AddErrorNotifications(params Notifiable[] objects)
-        {
-            foreach (Notifiable notifiable in objects)
-                _errorNotifications.AddRange(notifiable.ErrorNotifications);
-        }
-
         // Success notifications
-        public void AddSuccessNotification(NotificationMessage notification)
+        public void AddSuccessNotification(TNotificationMessage notification)
             => _successNotifications.Add(notification);
 
-        public void AddSuccessNotification(string key, string message)
-            => _successNotifications.Add(new NotificationMessage(key, message));
-
-        public void AddSuccessNotification(string key, string message, params object[] parameters)
-            => _successNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
-
-        public void AddSuccessNotifications(IEnumerable<NotificationMessage> notifications)
+        public void AddSuccessNotifications(IEnumerable<TNotificationMessage> notifications)
         {
             if (notifications.Any())
                 _successNotifications.AddRange(notifications);
-        }
-
-        public void AddSuccessNotifications(params Notifiable[] objects)
-        {
-            foreach (Notifiable notifiable in objects)
-                _successNotifications.AddRange(notifiable.ErrorNotifications);
         }
 
         // Clear notifications

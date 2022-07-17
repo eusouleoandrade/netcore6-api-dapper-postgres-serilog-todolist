@@ -2,15 +2,20 @@ using TodoList.Infra.Notification.Models;
 
 namespace TodoList.Infra.Notification.Interfaces
 {
-    public interface INotifiable
+    public interface INotifiable<TNotificationMessage>
+        where TNotificationMessage : class
     {
         // Properties
         bool HasErrorNotification { get; }
 
         bool HasSuccessNotification { get; }
 
-        IReadOnlyList<NotificationMessage> ErrorNotifications { get; }
+        IReadOnlyList<TNotificationMessage> ErrorNotifications { get; }
 
-        IReadOnlyList<NotificationMessage> SuccessNotifications { get; }
+        IReadOnlyList<TNotificationMessage> SuccessNotifications { get; }
+    }
+
+    public interface INotifiable : INotifiable<NotificationMessage>
+    {
     }
 }
