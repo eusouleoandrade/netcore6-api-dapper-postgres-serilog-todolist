@@ -27,22 +27,18 @@ namespace TodoList.Core.Application.UseCases
 
         public async Task<CreateTodoUseCaseResponse?> RunAsync(CreateTodoUseCaseRequest request)
         {
-            Validade(request);
+            if (request.HasErrorNotification)
+            {
+                _notificationContext.AddErrorNotifications(request);
 
-            if (_notificationContext.HasErrorNotification)
                 return await Task.FromResult<CreateTodoUseCaseResponse?>(default);
+            }
 
             var todo = _mapper.Map<Todo>(request);
 
             var todoResponse = await _todoRepositoryAsync.AddAsync(todo);
 
             return _mapper.Map<CreateTodoUseCaseResponse>(todoResponse);
-        }
-
-        private void Validade(CreateTodoUseCaseRequest request)
-        {
-            if (string.IsNullOrWhiteSpace(request.Title))
-                _notificationContext.AddErrorNotification(String.Empty, "Título é requerido");
         }
     }
 }

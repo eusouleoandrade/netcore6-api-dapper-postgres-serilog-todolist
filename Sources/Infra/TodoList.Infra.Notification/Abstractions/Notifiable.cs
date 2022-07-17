@@ -5,7 +5,7 @@ using TodoList.Infra.Notification.Models;
 
 namespace TodoList.Infra.Notification.Abstractions
 {
-    public abstract class Notifiable : INotifiable
+    public abstract class Notifiable : INotifiable, IDisposable
     {
         private readonly List<NotificationMessage> _errorNotifications;
 
@@ -21,13 +21,11 @@ namespace TodoList.Infra.Notification.Abstractions
 
         [NotMapped]
         [JsonIgnore]
-        public IReadOnlyList<NotificationMessage> ErrorNotifications
-            => _errorNotifications;
+        public IReadOnlyList<NotificationMessage> ErrorNotifications => _errorNotifications;
 
         [NotMapped]
         [JsonIgnore]
-        public IReadOnlyList<NotificationMessage> SuccessNotifications
-            => _successNotifications;
+        public IReadOnlyList<NotificationMessage> SuccessNotifications => _successNotifications;
 
         protected Notifiable()
         {
@@ -35,30 +33,63 @@ namespace TodoList.Infra.Notification.Abstractions
             _successNotifications = new List<NotificationMessage>();
         }
 
-        protected void AddErrorNotification(NotificationMessage notification)
+        // Error notifications
+        public void AddErrorNotification(NotificationMessage notification)
             => _errorNotifications.Add(notification);
 
-        protected void AddErrorNotification(string key, string message)
+        public void AddErrorNotification(string key, string message)
         {
             _errorNotifications.Add(new NotificationMessage(key, message));
         }
 
-        protected void AddErrorNotification(IEnumerable<NotificationMessage> notifications)
+        public void AddErrorNotification(string key, string message, params object[] parameters)
+            => _errorNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
+
+        public void AddErrorNotifications(IEnumerable<NotificationMessage> notifications)
         {
             if (notifications.Any())
-                notifications.ToList().ForEach(notification => AddErrorNotification(notification));
+                _errorNotifications.AddRange(notifications);
         }
 
-        protected void AddSuccessNotification(NotificationMessage notification)
+        public void AddErrorNotifications(params Notifiable[] objects)
+        {
+            foreach (Notifiable notifiable in objects)
+                _errorNotifications.AddRange(notifiable.ErrorNotifications);
+        }
+
+        // Success notification
+        public void AddSuccessNotification(NotificationMessage notification)
             => _successNotifications.Add(notification);
 
-        protected void AddSuccessNotification(string key, string message)
+        public void AddSuccessNotification(string key, string message)
             => _successNotifications.Add(new NotificationMessage(key, message));
 
-        protected void AddSuccessNotification(IEnumerable<NotificationMessage> notifications)
+        public void AddSuccessNotification(string key, string message, params object[] parameters)
+            => _successNotifications.Add(new NotificationMessage(key, string.Format(message, parameters)));
+
+        public void AddSuccessNotifications(IEnumerable<NotificationMessage> notifications)
         {
             if (notifications.Any())
-                notifications.ToList().ForEach(notification => AddSuccessNotification(notification));
+                _successNotifications.AddRange(notifications);
+        }
+
+        public void AddSuccessNotifications(params Notifiable[] objects)
+        {
+            foreach (Notifiable notifiable in objects)
+                _successNotifications.AddRange(notifiable.ErrorNotifications);
+        }
+
+        // Clear notifications
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _errorNotifications.Clear();
+            _successNotifications.Clear();
         }
     }
 }
