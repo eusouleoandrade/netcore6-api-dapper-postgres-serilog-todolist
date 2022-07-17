@@ -57,7 +57,7 @@ namespace TodoList.Infra.Notification.Abstractions
                 _errorNotifications.AddRange(notifiable.ErrorNotifications);
         }
 
-        // Success notification
+        // Success notifications
         public void AddSuccessNotification(NotificationMessage notification)
             => _successNotifications.Add(notification);
 
