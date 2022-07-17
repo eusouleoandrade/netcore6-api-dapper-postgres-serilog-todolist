@@ -16,12 +16,12 @@ namespace TodoList.Core.Application.Dtos.Wrappers
         public string? Message { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public IEnumerable<string>? Errors { get; set; }
+        public IEnumerable<NotificationMessage>? Errors { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public TData? Data { get; set; }
 
-        public Response(TData data, bool succeeded, string? message = null, IEnumerable<string>? errors = null)
+        public Response(TData data, bool succeeded, string? message = null, IEnumerable<NotificationMessage>? errors = null)
         {
             Succeeded = succeeded;
             Errors = errors;

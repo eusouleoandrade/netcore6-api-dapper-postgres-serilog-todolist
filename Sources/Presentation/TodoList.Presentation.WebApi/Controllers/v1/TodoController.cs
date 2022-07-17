@@ -5,7 +5,6 @@ using TodoList.Core.Application.Dtos.Requests;
 using TodoList.Core.Application.Dtos.Wrappers;
 using TodoList.Core.Application.Interfaces.UseCases;
 using TodoList.Infra.Notification.Contexts;
-using TodoList.Infra.Notification.Models;
 using TodoList.Presentation.WebApi.Controllers.Common;
 
 namespace TodoList.Presentation.WebApi.Controllers.v1
@@ -41,7 +40,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response<CreateTodoQuery, List<NotificationMessage>>>> Post([FromBody] CreateTodoRequest request)
+        public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
         {
             var useCaseRequest = _mapper.Map<CreateTodoUseCaseRequest>(request);
             var useCaseResponse = await _createTodoUseCase.RunAsync(useCaseRequest);
