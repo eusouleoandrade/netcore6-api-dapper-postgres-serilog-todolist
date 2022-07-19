@@ -2,9 +2,9 @@
 
 namespace TodoList.Presentation.WebApi.Extensions
 {
-    public static class NotificationExtension
+    public static class NotificationContextExtension
     {
-        public static void AddNotificationExtension(this IServiceCollection services)
+        public static void AddNotificationContextExtension(this IServiceCollection services)
         {
             services.AddScoped<NotificationContext>();
         }

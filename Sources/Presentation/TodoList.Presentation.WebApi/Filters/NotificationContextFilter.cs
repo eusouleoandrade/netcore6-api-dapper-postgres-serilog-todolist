@@ -6,11 +6,11 @@ using TodoList.Infra.Notification.Contexts;
 
 namespace TodoList.Presentation.WebApi.Filters
 {
-    public class NotificationFilter : IAsyncResultFilter
+    public class NotificationContextFilter : IAsyncResultFilter
     {
         private readonly NotificationContext _notificationContext;
 
-        public NotificationFilter(NotificationContext notificationContext)
+        public NotificationContextFilter(NotificationContext notificationContext)
             => _notificationContext = notificationContext;
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context,
@@ -19,6 +19,7 @@ namespace TodoList.Presentation.WebApi.Filters
             if (_notificationContext.HasErrorNotification)
             {
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
                 context.HttpContext.Response.ContentType = "application/json";
 
                 var response = new Response(succeeded: false, errors: _notificationContext.ErrorNotifications);
