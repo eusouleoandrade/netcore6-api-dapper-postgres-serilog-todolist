@@ -8,7 +8,7 @@ namespace TodoList.Presentation.WebApi.Extensions
         public static void AddControllerExtension(this IServiceCollection services)
         {
             services
-                .AddControllers(options => options.Filters.Add<NotificationFilter>())
+                .AddControllers(options => options.Filters.Add<NotificationContextFilter>())
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.Converters.Add(new StringEnumConverter()));
         }

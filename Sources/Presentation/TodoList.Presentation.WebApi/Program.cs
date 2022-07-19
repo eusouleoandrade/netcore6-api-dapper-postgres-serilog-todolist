@@ -11,7 +11,7 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddControllerExtension();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerExtension();
-builder.Services.AddNotificationExtension();
+builder.Services.AddNotificationContextExtension();
 builder.Services.AddApiVersioningExtension();
 
 var app = builder.Build();
