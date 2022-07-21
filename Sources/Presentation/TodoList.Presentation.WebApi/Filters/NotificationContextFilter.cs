@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
 using TodoList.Core.Application.Dtos.Wrappers;
 using TodoList.Infra.Notification.Contexts;
 
@@ -24,7 +24,7 @@ namespace TodoList.Presentation.WebApi.Filters
 
                 var response = new Response(succeeded: false, errors: _notificationContext.ErrorNotifications);
 
-                var notifications = JsonConvert.SerializeObject(response);
+                string notifications = JsonSerializer.Serialize(response);
 
                 await context.HttpContext.Response.WriteAsync(notifications);
 

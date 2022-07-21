@@ -22,7 +22,7 @@ namespace TodoList.Core.Application.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Msg {
+    public class Msg {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace TodoList.Core.Application.Resources {
         ///   Retorna a instância de ResourceManager armazenada em cache usada por essa classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TodoList.Core.Application.Resources.Msg", typeof(Msg).Assembly);
@@ -51,7 +51,7 @@ namespace TodoList.Core.Application.Resources {
         ///   pesquisas de recursos que usam essa classe de recurso de tipo de alta segurança.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,45 @@ namespace TodoList.Core.Application.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0002.
+        /// </summary>
+        public static string DATA_BASE_SERVER_ERROR_COD {
+            get {
+                return ResourceManager.GetString("DATA_BASE_SERVER_ERROR_COD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Database server error.
+        /// </summary>
+        public static string DATA_BASE_SERVER_ERROR_TXT {
+            get {
+                return ResourceManager.GetString("DATA_BASE_SERVER_ERROR_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0003.
+        /// </summary>
+        public static string INTERNAL_SERVER_ERROR_COD {
+            get {
+                return ResourceManager.GetString("INTERNAL_SERVER_ERROR_COD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Internal server error.
+        /// </summary>
+        public static string INTERNAL_SERVER_ERROR_TXT {
+            get {
+                return ResourceManager.GetString("INTERNAL_SERVER_ERROR_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a COD0001.
         /// </summary>
-        internal static string X0_E_OBRIGATORIO_COD {
+        public static string X0_E_OBRIGATORIO_COD {
             get {
                 return ResourceManager.GetString("X0_E_OBRIGATORIO_COD", resourceCulture);
             }
@@ -72,7 +108,7 @@ namespace TodoList.Core.Application.Resources {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a {0} é obrigatório..
         /// </summary>
-        internal static string X0_E_OBRIGATORIO_TXT {
+        public static string X0_E_OBRIGATORIO_TXT {
             get {
                 return ResourceManager.GetString("X0_E_OBRIGATORIO_TXT", resourceCulture);
             }
