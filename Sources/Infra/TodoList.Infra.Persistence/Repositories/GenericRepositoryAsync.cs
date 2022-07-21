@@ -1,7 +1,9 @@
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using TodoList.Core.Application.Exceptions;
 using TodoList.Core.Application.Interfaces.Repositories;
+using TodoList.Core.Application.Resources;
 
 namespace TodoList.Infra.Persistence.Repositories
 {
@@ -19,13 +21,40 @@ namespace TodoList.Infra.Persistence.Repositories
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
-            => await _connection.GetAllAsync<TEntity>();
+        {
+            try
+            {
+                return await _connection.GetAllAsync<TEntity>();
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
+            }
+        }
 
         public virtual async Task<TEntity> GetAsync(TId id)
-            => await _connection.GetAsync<TEntity>(id);
+        {
+            try
+            {
+                return await _connection.GetAsync<TEntity>(id);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
+            }
+        }
 
         public virtual async Task<int> InsertAsync(TEntity entity)
-            => await _connection.InsertAsync(entity);
+        {
+            try
+            {
+                return await _connection.InsertAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
+            }
+        }
 
         public void Dispose()
         {

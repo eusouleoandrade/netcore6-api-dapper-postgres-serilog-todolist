@@ -27,8 +27,10 @@ namespace TodoList.Core.Application.Dtos.Wrappers
             Errors = errors;
             Data = data;
 
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrWhiteSpace(message))
                 Message = succeeded ? succeededMessage : failedMessage;
+            else
+                Message = message;
         }
     }
 
@@ -57,8 +59,10 @@ namespace TodoList.Core.Application.Dtos.Wrappers
             Errors = errors;
             Data = data;
 
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrWhiteSpace(message))
                 Message = succeeded ? succeededMessage : failedMessage;
+            else
+                Message = message;
         }
     }
 
@@ -80,8 +84,10 @@ namespace TodoList.Core.Application.Dtos.Wrappers
             Succeeded = succeeded;
             Errors = errors;
 
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrWhiteSpace(message))
                 Message = succeeded ? succeededMessage : failedMessage;
+            else
+                Message = message;
         }
     }
 }
