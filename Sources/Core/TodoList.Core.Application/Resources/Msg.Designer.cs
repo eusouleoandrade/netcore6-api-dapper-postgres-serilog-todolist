@@ -61,6 +61,24 @@ namespace TodoList.Core.Application.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0003.
+        /// </summary>
+        public static string DADOS_DO_X0_NAO_ENCONTRADO_COD {
+            get {
+                return ResourceManager.GetString("DADOS_DO_X0_NAO_ENCONTRADO_COD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Dados do {0} não encontrado..
+        /// </summary>
+        public static string DADOS_DO_X0_NAO_ENCONTRADO_TXT {
+            get {
+                return ResourceManager.GetString("DADOS_DO_X0_NAO_ENCONTRADO_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a COD0002.
         /// </summary>
         public static string DATA_BASE_SERVER_ERROR_COD {
@@ -70,11 +88,29 @@ namespace TodoList.Core.Application.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Database server error.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Database server error..
         /// </summary>
         public static string DATA_BASE_SERVER_ERROR_TXT {
             get {
                 return ResourceManager.GetString("DATA_BASE_SERVER_ERROR_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0003.
+        /// </summary>
+        public static string FALHA_AO_REMOVER_X0_COD {
+            get {
+                return ResourceManager.GetString("FALHA_AO_REMOVER_X0_COD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Falha ao remover o {0}..
+        /// </summary>
+        public static string FALHA_AO_REMOVER_X0_TXT {
+            get {
+                return ResourceManager.GetString("FALHA_AO_REMOVER_X0_TXT", resourceCulture);
             }
         }
         
@@ -88,7 +124,7 @@ namespace TodoList.Core.Application.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Internal server error.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Internal server error..
         /// </summary>
         public static string INTERNAL_SERVER_ERROR_TXT {
             get {
