@@ -9,7 +9,8 @@ namespace TodoList.Infra.Persistence.Repositories
 {
     public class TodoRepositoryAsync : GenericRepositoryAsync<Todo, int>, ITodoRepositoryAsync
     {
-        public TodoRepositoryAsync(IConfiguration configuration) : base(configuration)
+        public TodoRepositoryAsync(IConfiguration configuration)
+            : base(configuration)
         {
         }
 

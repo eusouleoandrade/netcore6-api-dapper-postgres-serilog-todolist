@@ -16,6 +16,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
         private readonly ICreateTodoUseCase _createTodoUseCase;
 
+        private readonly IDeleteTodoUseCase _deleteTodoUseCase;
+
         private readonly IMapper _mapper;
 
         private readonly NotificationContext _notificationContext;
@@ -23,12 +25,14 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public TodoController(IGetAllTodoUseCase getAllTodoUseCase,
             ICreateTodoUseCase createTodoUseCase,
             IMapper mapper,
-            NotificationContext notificationContext)
+            NotificationContext notificationContext,
+            IDeleteTodoUseCase deleteTodoUseCase)
         {
             _getAllTodoUseCase = getAllTodoUseCase;
             _createTodoUseCase = createTodoUseCase;
             _mapper = mapper;
             _notificationContext = notificationContext;
+            _deleteTodoUseCase = deleteTodoUseCase;
         }
 
         [HttpGet]
@@ -52,6 +56,14 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
             return Created($"/api/v1/todo/{response.Id}",
                 new Response<CreateTodoQuery>(data: response, succeeded: true));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Response>> Delete(int id)
+        {
+            await _deleteTodoUseCase.RunAsync(id);
+
+            return NoContent();
         }
     }
 }

@@ -56,6 +56,18 @@ namespace TodoList.Infra.Persistence.Repositories
             }
         }
 
+        public virtual async Task<bool> DeleteAsync(TEntity entity)
+        {
+            try
+            {
+                return await _connection.DeleteAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);

@@ -8,7 +8,6 @@ namespace TodoList.Core.Application.Interfaces.UseCases
     }
 
     public interface IUseCase<TRequest>
-        where TRequest : class
     {
         Task RunAsync(TRequest request);
     }
