@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using TodoList.Infra.Notification.Models;
 
 namespace TodoList.Core.Application.Dtos.Wrappers
@@ -15,10 +15,10 @@ namespace TodoList.Core.Application.Dtos.Wrappers
 
         public string? Message { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public IEnumerable<NotificationMessage>? Errors { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TData? Data { get; set; }
 
         public Response(TData data, bool succeeded, string? message = null, IEnumerable<NotificationMessage>? errors = null)
@@ -47,10 +47,10 @@ namespace TodoList.Core.Application.Dtos.Wrappers
 
         public string? Message { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TErrors? Errors { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TData? Data { get; set; }
 
         public Response(TData data, bool succeeded, string? message = null, TErrors? errors = null)
@@ -76,7 +76,7 @@ namespace TodoList.Core.Application.Dtos.Wrappers
 
         public string? Message { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public IEnumerable<NotificationMessage>? Errors { get; set; }
 
         public Response(bool succeeded, string? message = null, IEnumerable<NotificationMessage>? errors = null)

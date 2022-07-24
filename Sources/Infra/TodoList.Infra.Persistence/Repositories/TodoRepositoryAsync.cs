@@ -19,8 +19,8 @@ namespace TodoList.Infra.Persistence.Repositories
             try
             {
                 string insertSql = @"INSERT INTO todo (title, done)
-                                VALUES(@title, @done)
-                                RETURNING id;";
+                                    VALUES(@title, @done)
+                                    RETURNING id;";
 
                 var id = await _connection.ExecuteScalarAsync<int>(insertSql,
                     new
@@ -37,6 +37,26 @@ namespace TodoList.Infra.Persistence.Repositories
             catch (Exception ex)
             {
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
+            }
+        }
+
+        public async Task<bool> RemoveAsync(int id)
+        {
+            try
+            {
+                string deleteSql = @"DELETE FROM todo
+                                    WHERE id = @id";
+
+                var affectedrows = await _connection.ExecuteAsync(deleteSql, new
+                {
+                    id
+                });
+
+                return affectedrows > Decimal.Zero;
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT, ex);
             }
         }
     }
