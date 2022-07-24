@@ -29,7 +29,7 @@ namespace TodoList.Core.Application.Dtos.Requests
 
             if (String.IsNullOrWhiteSpace(Title))
                 AddErrorNotification(Msg.X0_E_OBRIGATORIO_COD,
-                Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT.ToFormat("Title"));
+                Msg.X0_E_OBRIGATORIO_COD.ToFormat("Title"));
         }
     }
 }
