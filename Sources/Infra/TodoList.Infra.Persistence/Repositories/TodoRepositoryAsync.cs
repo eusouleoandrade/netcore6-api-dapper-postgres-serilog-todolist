@@ -56,7 +56,7 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new AppException(Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT, ex);
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
 
@@ -78,7 +78,7 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                throw new AppException(Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT, ex);
+                throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
     }

@@ -63,18 +63,18 @@ namespace TodoList.Core.Application.Resources {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a COD0003.
         /// </summary>
-        public static string DADOS_DO_X0_NAO_ENCONTRADO_COD {
+        public static string DADOS_DO_X0_X1_NAO_ENCONTRADO_COD {
             get {
-                return ResourceManager.GetString("DADOS_DO_X0_NAO_ENCONTRADO_COD", resourceCulture);
+                return ResourceManager.GetString("DADOS_DO_X0_X1_NAO_ENCONTRADO_COD", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Dados do {0} não encontrado..
         /// </summary>
-        public static string DADOS_DO_X0_NAO_ENCONTRADO_TXT {
+        public static string DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT {
             get {
-                return ResourceManager.GetString("DADOS_DO_X0_NAO_ENCONTRADO_TXT", resourceCulture);
+                return ResourceManager.GetString("DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT", resourceCulture);
             }
         }
         

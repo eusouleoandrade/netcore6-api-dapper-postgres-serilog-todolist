@@ -117,12 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DADOS_DO_X0_NAO_ENCONTRADO_COD" xml:space="preserve">
+  <data name="DADOS_DO_X0_X1_NAO_ENCONTRADO_COD" xml:space="preserve">
     <value>COD0003</value>
     <comment/>
   </data>
-  <data name="DADOS_DO_X0_NAO_ENCONTRADO_TXT" xml:space="preserve">
-    <value>Dados do {0} não encontrado.</value>
+  <data name="DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT" xml:space="preserve">
+    <value>Dados do {0} {1} não encontrado.</value>
     <comment/>
   </data>
   <data name="DATA_BASE_SERVER_ERROR_COD" xml:space="preserve">

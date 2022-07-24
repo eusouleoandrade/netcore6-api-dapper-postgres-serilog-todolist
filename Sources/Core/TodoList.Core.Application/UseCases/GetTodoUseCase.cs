@@ -37,8 +37,8 @@ namespace TodoList.Core.Application.UseCases
 
             if (todo is null)
             {
-                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_NAO_ENCONTRADO_COD,
-                    Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT.ToFormat("Todo"));
+                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD,
+                    Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", id));
 
                 return await Task.FromResult<GetTodoUseCaseResponse?>(default);
             }
