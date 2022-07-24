@@ -19,6 +19,10 @@ namespace TodoList.Core.Application.Mappings
             CreateMap<CreateTodoRequest, CreateTodoUseCaseRequest>();
 
             CreateMap<CreateTodoUseCaseResponse, CreateTodoQuery>();
+
+            CreateMap<Todo, GetTodoUseCaseResponse>();
+
+            CreateMap<GetTodoUseCaseResponse, GetTodoQuery>();
         }
     }
 }

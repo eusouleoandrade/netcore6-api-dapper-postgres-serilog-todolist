@@ -115,7 +115,25 @@ namespace TodoList.Core.Application.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0003.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0005.
+        /// </summary>
+        public static string IDENTIFICADOR_X0_INVÁLIDO_COD {
+            get {
+                return ResourceManager.GetString("IDENTIFICADOR_X0_INVÁLIDO_COD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Indentificador {0} inválido..
+        /// </summary>
+        public static string IDENTIFICADOR_X0_INVÁLIDO_TXT {
+            get {
+                return ResourceManager.GetString("IDENTIFICADOR_X0_INVÁLIDO_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0004.
         /// </summary>
         public static string INTERNAL_SERVER_ERROR_COD {
             get {

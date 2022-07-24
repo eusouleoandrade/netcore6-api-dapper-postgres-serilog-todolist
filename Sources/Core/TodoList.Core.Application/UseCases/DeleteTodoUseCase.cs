@@ -1,7 +1,6 @@
 ﻿using TodoList.Core.Application.Interfaces.Repositories;
 using TodoList.Core.Application.Interfaces.UseCases;
 using TodoList.Core.Application.Resources;
-using TodoList.Core.Domain.Entities;
 using TodoList.Infra.Notification.Contexts;
 using TodoList.Infra.Notification.Extensions;
 
@@ -9,21 +8,25 @@ namespace TodoList.Core.Application.UseCases
 {
     public class DeleteTodoUseCase : IDeleteTodoUseCase
     {
-        private readonly IGenericRepositoryAsync<Todo, int> _genericRepositoryAsync;
+        private readonly ITodoRepositoryAsync _todoRepositoryAsync;
 
         private readonly NotificationContext _notificationContext;
 
-        public DeleteTodoUseCase(IGenericRepositoryAsync<Todo
-            , int> genericRepositoryAsync
-            , NotificationContext notificationContext)
+        public DeleteTodoUseCase(ITodoRepositoryAsync todoRepositoryAsync,
+            NotificationContext notificationContext)
         {
-            _genericRepositoryAsync = genericRepositoryAsync;
+            _todoRepositoryAsync = todoRepositoryAsync;
             _notificationContext = notificationContext;
         }
 
         public async Task RunAsync(int id)
         {
-            var todo = await _genericRepositoryAsync.GetAsync(id);
+            Validate(id);
+
+            if (_notificationContext.HasErrorNotification)
+                return;
+
+            var todo = await _todoRepositoryAsync.GetAsync(id);
 
             if (todo is null)
             {
@@ -33,11 +36,18 @@ namespace TodoList.Core.Application.UseCases
                 return;
             }
 
-            var removed = await _genericRepositoryAsync.DeleteAsync(todo);
+            var removed = await _todoRepositoryAsync.RemoveAsync(id);
 
             if (!removed)
                 _notificationContext.AddErrorNotification(Msg.FALHA_AO_REMOVER_X0_COD,
                     Msg.FALHA_AO_REMOVER_X0_TXT.ToFormat("Todo"));
+        }
+
+        private void Validate(int id)
+        {
+            if (id <= Decimal.Zero)
+                _notificationContext.AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD,
+                    Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(id));
         }
     }
 }

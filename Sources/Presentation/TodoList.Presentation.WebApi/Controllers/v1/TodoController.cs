@@ -18,6 +18,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
         private readonly IDeleteTodoUseCase _deleteTodoUseCase;
 
+        private readonly IGetTodoUseCase _getTodoUseCase;
+
         private readonly IMapper _mapper;
 
         private readonly NotificationContext _notificationContext;
@@ -26,13 +28,15 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             ICreateTodoUseCase createTodoUseCase,
             IMapper mapper,
             NotificationContext notificationContext,
-            IDeleteTodoUseCase deleteTodoUseCase)
+            IDeleteTodoUseCase deleteTodoUseCase,
+            IGetTodoUseCase getTodoUseCase)
         {
             _getAllTodoUseCase = getAllTodoUseCase;
             _createTodoUseCase = createTodoUseCase;
             _mapper = mapper;
             _notificationContext = notificationContext;
             _deleteTodoUseCase = deleteTodoUseCase;
+            _getTodoUseCase = getTodoUseCase;
         }
 
         [HttpGet]
@@ -47,6 +51,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
         {
             var useCaseRequest = _mapper.Map<CreateTodoUseCaseRequest>(request);
+
             var useCaseResponse = await _createTodoUseCase.RunAsync(useCaseRequest);
 
             if (_notificationContext.HasErrorNotification)
@@ -64,6 +69,16 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             await _deleteTodoUseCase.RunAsync(id);
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Response<GetTodoQuery>>> Get(int id)
+        {
+            var useCaseResponse = await _getTodoUseCase.RunAsync(id);
+
+            var response = _mapper.Map<GetTodoQuery>(useCaseResponse);
+
+            return Ok(new Response<GetTodoQuery>(succeeded: true, data: response));
         }
     }
 }
