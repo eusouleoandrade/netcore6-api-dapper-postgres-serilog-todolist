@@ -14,6 +14,8 @@ namespace TodoList.Core.Application.Ioc
             services.AddScoped<ICreateTodoUseCase, CreateTodoUseCase>();
             services.AddScoped<IDeleteTodoUseCase, DeleteTodoUseCase>();
             services.AddScoped<IGetTodoUseCase, GetTodoUseCase>();
+            services.AddScoped<IUpdateTodoUseCase, UpdateTodoUseCase>();
+            services.AddScoped<ISetDoneTodoUseCase, SetDoneTodoUseCase>();
         }
     }
 }

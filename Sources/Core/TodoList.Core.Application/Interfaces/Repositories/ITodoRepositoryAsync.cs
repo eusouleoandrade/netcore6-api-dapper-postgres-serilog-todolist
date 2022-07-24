@@ -7,5 +7,7 @@ namespace TodoList.Core.Application.Interfaces.Repositories
         Task<Todo?> AddAsync(Todo entity);
 
         Task<bool> RemoveAsync(int id);
+
+        Task<bool> UpdateAsync(Todo entity);
     }
 }

@@ -13,15 +13,12 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
     public class TodoController : BaseApiController
     {
         private readonly IGetAllTodoUseCase _getAllTodoUseCase;
-
         private readonly ICreateTodoUseCase _createTodoUseCase;
-
         private readonly IDeleteTodoUseCase _deleteTodoUseCase;
-
         private readonly IGetTodoUseCase _getTodoUseCase;
-
+        private readonly IUpdateTodoUseCase _updateTodoUseCase;
+        private readonly ISetDoneTodoUseCase _setDoneTodoUseCase;
         private readonly IMapper _mapper;
-
         private readonly NotificationContext _notificationContext;
 
         public TodoController(IGetAllTodoUseCase getAllTodoUseCase,
@@ -29,7 +26,9 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             IMapper mapper,
             NotificationContext notificationContext,
             IDeleteTodoUseCase deleteTodoUseCase,
-            IGetTodoUseCase getTodoUseCase)
+            IGetTodoUseCase getTodoUseCase,
+            IUpdateTodoUseCase updateTodoUseCase,
+            ISetDoneTodoUseCase setDoneTodoUseCase)
         {
             _getAllTodoUseCase = getAllTodoUseCase;
             _createTodoUseCase = createTodoUseCase;
@@ -37,6 +36,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             _notificationContext = notificationContext;
             _deleteTodoUseCase = deleteTodoUseCase;
             _getTodoUseCase = getTodoUseCase;
+            _updateTodoUseCase = updateTodoUseCase;
+            _setDoneTodoUseCase = setDoneTodoUseCase;
         }
 
         [HttpGet]
@@ -50,9 +51,9 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
         {
-            var useCaseRequest = _mapper.Map<CreateTodoUseCaseRequest>(request);
-
-            var useCaseResponse = await _createTodoUseCase.RunAsync(useCaseRequest);
+            var useCaseResponse = await _createTodoUseCase.RunAsync(
+                _mapper.Map<CreateTodoUseCaseRequest>(request)
+            );
 
             if (_notificationContext.HasErrorNotification)
                 return BadRequest();
@@ -79,6 +80,26 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             var response = _mapper.Map<GetTodoQuery>(useCaseResponse);
 
             return Ok(new Response<GetTodoQuery>(succeeded: true, data: response));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Response>> Put(int id, [FromBody] UpdateTodoRequest request)
+        {
+            await _updateTodoUseCase.RunAsync(
+                new UpdateTodoUseCaseRequest(id, request.Title, request.Done)
+            );
+
+            return Ok(new Response(succeeded: true));
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Response>> Patch(int id, [FromBody] SetDoneTodoRequest request)
+        {
+            await _setDoneTodoUseCase.RunAsync(
+                new SetDoneTodoUseCaseRequest(id, request.Done)
+            );
+
+            return Ok(new Response(succeeded: true));
         }
     }
 }

@@ -59,5 +59,27 @@ namespace TodoList.Infra.Persistence.Repositories
                 throw new AppException(Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT, ex);
             }
         }
+
+        public async Task<bool> UpdateAsync(Todo entity)
+        {
+            try
+            {
+                string updateSql = @"UPDATE todo
+                                    SET title=@title, done=@done
+                                    WHERE id=@id";
+                
+                var affectedrows = await _connection.ExecuteAsync(updateSql, new {
+                    id = entity.Id,
+                    title = entity.Title,
+                    done = entity.Done
+                });
+
+                return affectedrows > Decimal.Zero;
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(Msg.DADOS_DO_X0_NAO_ENCONTRADO_TXT, ex);
+            }
+        }
     }
 }

@@ -7,7 +7,5 @@ namespace TodoList.Core.Application.Interfaces.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         Task<TEntity> GetAsync(TId id);
-
-        Task<bool> DeleteAsync(TEntity entity);
     }
 }

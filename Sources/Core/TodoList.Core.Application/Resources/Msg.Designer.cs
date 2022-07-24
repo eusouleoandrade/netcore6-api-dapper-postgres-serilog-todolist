@@ -122,6 +122,24 @@ namespace TodoList.Core.Application.Resources {
                 return ResourceManager.GetString("IDENTIFICADOR_X0_INVÁLIDO_COD", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Falha ao atualizar o {0}..
+        /// </summary>
+        public static string FALHA_AO_ATUALIZAR_X0_TXT {
+            get {
+                return ResourceManager.GetString("FALHA_AO_ATUALIZAR_X0_TXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a COD0006.
+        /// </summary>
+        public static string FALHA_AO_ATUALIZAR_X0_COD {
+            get {
+                return ResourceManager.GetString("FALHA_AO_ATUALIZAR_X0_COD", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Indentificador {0} inválido..
