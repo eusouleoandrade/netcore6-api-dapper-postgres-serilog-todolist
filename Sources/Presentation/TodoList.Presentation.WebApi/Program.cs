@@ -13,6 +13,9 @@ builder.Services.AddSwaggerExtension();
 builder.Services.AddNotificationContextExtension();
 builder.Services.AddApiVersioningExtension();
 
+// Configure logs
+builder.Logging.AddFile("logs/todo-app.json", isJson: true);
+
 // Configura app
 var app = builder.Build();
 

@@ -20,6 +20,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         private readonly ISetDoneTodoUseCase _setDoneTodoUseCase;
         private readonly IMapper _mapper;
         private readonly NotificationContext _notificationContext;
+        private readonly ILogger<TodoController> _logger;
 
         public TodoController(IGetAllTodoUseCase getAllTodoUseCase,
             ICreateTodoUseCase createTodoUseCase,
@@ -28,7 +29,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             IDeleteTodoUseCase deleteTodoUseCase,
             IGetTodoUseCase getTodoUseCase,
             IUpdateTodoUseCase updateTodoUseCase,
-            ISetDoneTodoUseCase setDoneTodoUseCase)
+            ISetDoneTodoUseCase setDoneTodoUseCase,
+            ILogger<TodoController> logger)
         {
             _getAllTodoUseCase = getAllTodoUseCase;
             _createTodoUseCase = createTodoUseCase;
@@ -38,12 +40,17 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
             _getTodoUseCase = getTodoUseCase;
             _updateTodoUseCase = updateTodoUseCase;
             _setDoneTodoUseCase = setDoneTodoUseCase;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<Response<List<TodoQuery>>>> Get()
         {
+            _logger.LogInformation("Start get all todo");
+
             var useCaseResponse = await _getAllTodoUseCase.RunAsync();
+
+            _logger.LogInformation("End get all todo");
 
             return Ok(new Response<IReadOnlyList<TodoQuery>>(useCaseResponse, true));
         }
@@ -52,8 +59,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
         {
             var useCaseResponse = await _createTodoUseCase.RunAsync(
-                _mapper.Map<CreateTodoUseCaseRequest>(request)
-            );
+                _mapper.Map<CreateTodoUseCaseRequest>(request));
 
             if (_notificationContext.HasErrorNotification)
                 return BadRequest();
@@ -86,8 +92,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public async Task<ActionResult<Response>> Put(int id, [FromBody] UpdateTodoRequest request)
         {
             await _updateTodoUseCase.RunAsync(
-                new UpdateTodoUseCaseRequest(id, request.Title, request.Done)
-            );
+                new UpdateTodoUseCaseRequest(id, request.Title, request.Done));
 
             return Ok(new Response(succeeded: true));
         }
@@ -96,8 +101,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         public async Task<ActionResult<Response>> Patch(int id, [FromBody] SetDoneTodoRequest request)
         {
             await _setDoneTodoUseCase.RunAsync(
-                new SetDoneTodoUseCaseRequest(id, request.Done)
-            );
+                new SetDoneTodoUseCaseRequest(id, request.Done));
 
             return Ok(new Response(succeeded: true));
         }
