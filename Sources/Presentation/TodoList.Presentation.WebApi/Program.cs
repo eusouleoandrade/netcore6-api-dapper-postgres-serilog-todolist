@@ -16,7 +16,7 @@ builder.Services.AddApiVersioningExtension();
 // Configure logs
 builder.Logging.AddFile("logs/todo-app.json", isJson: true);
 
-// Configura app
+// Configure app
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
