@@ -45,7 +45,7 @@ namespace TodoList.Core.Application.UseCases
 
             var todoResponse = await _todoRepositoryAsync.AddAsync(todo);
 
-            _logger.LogInformation("Finaliza com use case para criar todo com sucesso.");
+            _logger.LogInformation("Finaliza com sucesso o use case para criar todo.");
 
             return _mapper.Map<CreateTodoUseCaseResponse>(todoResponse);
         }
