@@ -1,5 +1,7 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using TodoList.Core.Application.Exceptions;
 using TodoList.Core.Application.Interfaces.Repositories;
 using TodoList.Core.Application.Resources;
@@ -9,15 +11,20 @@ namespace TodoList.Infra.Persistence.Repositories
 {
     public class TodoRepositoryAsync : GenericRepositoryAsync<Todo, int>, ITodoRepositoryAsync
     {
-        public TodoRepositoryAsync(IConfiguration configuration)
-            : base(configuration)
+        private readonly ILogger<TodoRepositoryAsync> _logger;
+
+        public TodoRepositoryAsync(IConfiguration configuration, ILogger<TodoRepositoryAsync> logger)
+            : base(configuration, logger)
         {
+            _logger = logger;
         }
 
         public async Task<Todo?> AddAsync(Todo entity)
         {
             try
             {
+                _logger.LogInformation($"Inicia o repositório inserir todo: {JsonSerializer.Serialize(entity)}");
+
                 string insertSql = @"INSERT INTO todo (title, done)
                                     VALUES(@title, @done)
                                     RETURNING id;";
@@ -32,10 +39,14 @@ namespace TodoList.Infra.Persistence.Repositories
                 if (id > decimal.Zero)
                     return await base.GetAsync(id);
 
+                _logger.LogInformation("Finaliza repositório com sucesso o inserir todo.");
+
                 return await Task.FromResult<Todo?>(default);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Finaliza repositório com falha o inserir todo.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
@@ -44,6 +55,8 @@ namespace TodoList.Infra.Persistence.Repositories
         {
             try
             {
+                _logger.LogInformation($"Inicia o repositório para remover todo: {id}");
+
                 string deleteSql = @"DELETE FROM todo
                                     WHERE id = @id";
 
@@ -52,10 +65,14 @@ namespace TodoList.Infra.Persistence.Repositories
                     id
                 });
 
+                _logger.LogInformation("Finliza repositório com sucesso o remover todo.");
+
                 return affectedrows > Decimal.Zero;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Finaliza repositório com falha o remover todo.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
@@ -64,20 +81,27 @@ namespace TodoList.Infra.Persistence.Repositories
         {
             try
             {
+                _logger.LogInformation($"Inicia o repositório para atualizar todo: {JsonSerializer.Serialize(entity)}");
+
                 string updateSql = @"UPDATE todo
                                     SET title=@title, done=@done
                                     WHERE id=@id";
-                
-                var affectedrows = await _connection.ExecuteAsync(updateSql, new {
+
+                var affectedrows = await _connection.ExecuteAsync(updateSql, new
+                {
                     id = entity.Id,
                     title = entity.Title,
                     done = entity.Done
                 });
 
+                _logger.LogInformation("Finaliza repostório com sucesso para atualizar todo.");
+
                 return affectedrows > Decimal.Zero;
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(ex, "Finaliza repositório com falha para atualizar todo.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }

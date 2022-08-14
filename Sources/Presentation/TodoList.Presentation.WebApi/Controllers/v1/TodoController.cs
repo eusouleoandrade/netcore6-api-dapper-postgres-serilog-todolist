@@ -46,11 +46,11 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpGet]
         public async Task<ActionResult<Response<List<TodoQuery>>>> Get()
         {
-            _logger.LogInformation("Start get all todo");
+            _logger.LogInformation("Inicia endpoint get all todo.");
 
             var useCaseResponse = await _getAllTodoUseCase.RunAsync();
 
-            _logger.LogInformation("End get all todo");
+            _logger.LogInformation("Finaliza endepoint get all todo.");
 
             return Ok(new Response<IReadOnlyList<TodoQuery>>(useCaseResponse, true));
         }
@@ -58,6 +58,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<Response<CreateTodoQuery>>> Post([FromBody] CreateTodoRequest request)
         {
+            _logger.LogInformation("Inicia endpoint post todo.");
+
             var useCaseResponse = await _createTodoUseCase.RunAsync(
                 _mapper.Map<CreateTodoUseCaseRequest>(request));
 
@@ -66,6 +68,8 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
             var response = _mapper.Map<CreateTodoQuery>(useCaseResponse);
 
+            _logger.LogInformation("Finaliza endepoint post todo.");
+
             return Created($"/api/v1/todo/{response.Id}",
                 new Response<CreateTodoQuery>(data: response, succeeded: true));
         }
@@ -73,7 +77,11 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<ActionResult<Response>> Delete(int id)
         {
+            _logger.LogInformation("Inicia endepoint delete todo.");
+
             await _deleteTodoUseCase.RunAsync(id);
+
+            _logger.LogInformation("Finaliza endpoint delete todo.");
 
             return NoContent();
         }
@@ -81,9 +89,13 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpGet("{id}")]
         public async Task<ActionResult<Response<GetTodoQuery>>> Get(int id)
         {
+            _logger.LogInformation("Inicia endepoint get todo.");
+
             var useCaseResponse = await _getTodoUseCase.RunAsync(id);
 
             var response = _mapper.Map<GetTodoQuery>(useCaseResponse);
+
+            _logger.LogInformation("Finaliza endpoint get todo.");
 
             return Ok(new Response<GetTodoQuery>(succeeded: true, data: response));
         }
@@ -91,8 +103,12 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpPut("{id}")]
         public async Task<ActionResult<Response>> Put(int id, [FromBody] UpdateTodoRequest request)
         {
+            _logger.LogInformation("Inicia endpoint put todo.");
+
             await _updateTodoUseCase.RunAsync(
                 new UpdateTodoUseCaseRequest(id, request.Title, request.Done));
+
+            _logger.LogInformation("Finaliza endpoint put todo.");
 
             return Ok(new Response(succeeded: true));
         }
@@ -100,8 +116,12 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         [HttpPatch("{id}")]
         public async Task<ActionResult<Response>> Patch(int id, [FromBody] SetDoneTodoRequest request)
         {
+            _logger.LogInformation("Inicia endpoint patch todo.");
+
             await _setDoneTodoUseCase.RunAsync(
                 new SetDoneTodoUseCaseRequest(id, request.Done));
+
+            _logger.LogInformation("Finaliza endpoint patch todo.");
 
             return Ok(new Response(succeeded: true));
         }

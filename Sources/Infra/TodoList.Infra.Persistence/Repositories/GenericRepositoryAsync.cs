@@ -1,5 +1,6 @@
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using TodoList.Core.Application.Exceptions;
 using TodoList.Core.Application.Interfaces.Repositories;
@@ -13,11 +14,14 @@ namespace TodoList.Infra.Persistence.Repositories
     {
         protected readonly NpgsqlConnection _connection;
 
-        public GenericRepositoryAsync(IConfiguration configuration)
+        private readonly ILogger<GenericRepositoryAsync<TEntity, TId>> _logger;
+
+        public GenericRepositoryAsync(IConfiguration configuration, ILogger<GenericRepositoryAsync<TEntity, TId>> logger)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             _connection = new NpgsqlConnection(connectionString);
+            _logger = logger;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -28,6 +32,8 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Finaliza repositório genérico com falha no get all.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
@@ -40,6 +46,8 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Finaliza repositório genérico com falha no get.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
@@ -52,6 +60,8 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Finaliza repositório genérico com falha no insert.");
+
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
         }
