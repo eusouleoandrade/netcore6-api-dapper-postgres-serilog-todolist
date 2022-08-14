@@ -36,7 +36,8 @@ namespace TodoList.Core.Application.UseCases
             {
                 _notificationContext.AddErrorNotifications(request);
 
-                _logger.LogWarning($"Erros de validações do request: {JsonSerializer.Serialize(request.ErrorNotifications)}");
+                var data = JsonSerializer.Serialize(request.ErrorNotifications);
+                _logger.LogWarning("Erros de validações do request: {data}", data);
 
                 return await Task.FromResult<CreateTodoUseCaseResponse?>(default);
             }

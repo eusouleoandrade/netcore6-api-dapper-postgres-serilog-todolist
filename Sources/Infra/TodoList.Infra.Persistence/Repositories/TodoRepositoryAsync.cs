@@ -23,7 +23,8 @@ namespace TodoList.Infra.Persistence.Repositories
         {
             try
             {
-                _logger.LogInformation($"Inicia o repositório inserir todo: {JsonSerializer.Serialize(entity)}");
+                var data = JsonSerializer.Serialize(entity);
+                _logger.LogInformation("Inicia o repositório inserir todo: {data}", data);
 
                 string insertSql = @"INSERT INTO todo (title, done)
                                     VALUES(@title, @done)
@@ -55,7 +56,7 @@ namespace TodoList.Infra.Persistence.Repositories
         {
             try
             {
-                _logger.LogInformation($"Inicia o repositório para remover todo: {id}");
+                _logger.LogInformation("Inicia o repositório para remover todo: {id}", id);
 
                 string deleteSql = @"DELETE FROM todo
                                     WHERE id = @id";
@@ -81,7 +82,8 @@ namespace TodoList.Infra.Persistence.Repositories
         {
             try
             {
-                _logger.LogInformation($"Inicia o repositório para atualizar todo: {JsonSerializer.Serialize(entity)}");
+                var data = JsonSerializer.Serialize(entity);
+                _logger.LogInformation("Inicia o repositório para atualizar todo: {data}", data);
 
                 string updateSql = @"UPDATE todo
                                     SET title=@title, done=@done
@@ -100,7 +102,7 @@ namespace TodoList.Infra.Persistence.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, "Finaliza repositório com falha para atualizar todo.");
+                _logger.LogError(ex, "Finaliza repositório com falha para atualizar todo.");
 
                 throw new AppException(Msg.DATA_BASE_SERVER_ERROR_TXT, ex);
             }
