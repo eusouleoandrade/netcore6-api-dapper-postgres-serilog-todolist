@@ -13,16 +13,19 @@ namespace TodoList.Core.Application.UseCases
     public class SetDoneTodoUseCase : ISetDoneTodoUseCase
     {
         private readonly ITodoRepositoryAsync _todoRepositoryAsync;
-        private readonly NotificationContext _nofificationContext;
+        private readonly NotificationContext _notificationContext;
         private readonly ILogger<SetDoneTodoUseCase> _logger;
+        private readonly IGetTodoUseCase _getTodoUseCase;
 
         public SetDoneTodoUseCase(ITodoRepositoryAsync todoRepositoryAsync,
             NotificationContext notificationContext,
-            ILogger<SetDoneTodoUseCase> logger)
+            ILogger<SetDoneTodoUseCase> logger,
+            IGetTodoUseCase getTodoUseCase)
         {
             _todoRepositoryAsync = todoRepositoryAsync;
-            _nofificationContext = notificationContext;
+            _notificationContext = notificationContext;
             _logger = logger;
+            _getTodoUseCase = getTodoUseCase;
         }
 
         public async Task RunAsync(SetDoneTodoUseCaseRequest request)
@@ -31,35 +34,26 @@ namespace TodoList.Core.Application.UseCases
 
             if (request.HasErrorNotification)
             {
-                _nofificationContext.AddErrorNotifications(request);
+                _notificationContext.AddErrorNotifications(request);
 
-                var data = JsonSerializer.Serialize(_nofificationContext.ErrorNotifications);
+                var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
                 _logger.LogWarning("Erro de validação do request: {data}", data);
 
                 return;
             }
 
-            var todoDataBase = await _todoRepositoryAsync.GetAsync(request.Id);
+            var getTodoUseCaseResponse = await _getTodoUseCase.RunAsync(request.Id);
 
-            if (todoDataBase is null)
-            {
-                _nofificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD,
-                    Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", request.Id));
-
-                var data = JsonSerializer.Serialize(_nofificationContext.ErrorNotifications);
-                _logger.LogWarning("Erro ao obter o todo: {data}", data);
-
+            if (_notificationContext.HasErrorNotification || getTodoUseCaseResponse is null)
                 return;
-            }
 
-            var updated = await _todoRepositoryAsync.UpdateAsync(new Todo(todoDataBase.Id, todoDataBase.Title, request.Done));
+            var updated = await _todoRepositoryAsync.UpdateAsync(new Todo(getTodoUseCaseResponse.Id, getTodoUseCaseResponse.Title, request.Done));
 
             if (!updated)
             {
-                _nofificationContext.AddErrorNotification(Msg.FALHA_AO_ATUALIZAR_X0_COD,
-                    Msg.FALHA_AO_ATUALIZAR_X0_TXT.ToFormat("Todo"));
+                _notificationContext.AddErrorNotification(Msg.FALHA_AO_ATUALIZAR_X0_COD, Msg.FALHA_AO_ATUALIZAR_X0_TXT.ToFormat("Todo"));
 
-                var data = JsonSerializer.Serialize(_nofificationContext.ErrorNotifications);
+                var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
                 _logger.LogWarning("Falha ao atualizar todo: {data}", data);
 
                 return;

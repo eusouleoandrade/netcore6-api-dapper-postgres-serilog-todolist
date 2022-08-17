@@ -13,14 +13,17 @@ namespace TodoList.Core.Application.UseCases
         private readonly ITodoRepositoryAsync _todoRepositoryAsync;
         private readonly NotificationContext _notificationContext;
         private readonly ILogger<DeleteTodoUseCase> _logger;
+        private readonly IGetTodoUseCase _getTodoUseCase;
 
         public DeleteTodoUseCase(ITodoRepositoryAsync todoRepositoryAsync,
             NotificationContext notificationContext,
-            ILogger<DeleteTodoUseCase> logger)
+            ILogger<DeleteTodoUseCase> logger,
+            IGetTodoUseCase getTodoUseCase)
         {
             _todoRepositoryAsync = todoRepositoryAsync;
             _notificationContext = notificationContext;
             _logger = logger;
+            _getTodoUseCase = getTodoUseCase;
         }
 
         public async Task RunAsync(int id)
@@ -37,25 +40,16 @@ namespace TodoList.Core.Application.UseCases
                 return;
             }
 
-            var todo = await _todoRepositoryAsync.GetAsync(id);
+            var getTodoUseCaseResponse = await _getTodoUseCase.RunAsync(id);
 
-            if (todo is null)
-            {
-                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD,
-                    Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", id));
-
-                var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
-                _logger.LogWarning("Erro ao tentar obter o todo: {data}", data);
-
+            if (_notificationContext.HasErrorNotification || getTodoUseCaseResponse is null)
                 return;
-            }
 
-            var removed = await _todoRepositoryAsync.RemoveAsync(id);
+            var removed = await _todoRepositoryAsync.RemoveAsync(getTodoUseCaseResponse.Id);
 
             if (!removed)
             {
-                _notificationContext.AddErrorNotification(Msg.FALHA_AO_REMOVER_X0_COD,
-                    Msg.FALHA_AO_REMOVER_X0_TXT.ToFormat("Todo"));
+                _notificationContext.AddErrorNotification(Msg.FALHA_AO_REMOVER_X0_COD, Msg.FALHA_AO_REMOVER_X0_TXT.ToFormat("Todo"));
 
                 var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
                 _logger.LogWarning("Falha ao remover o todo: {data}", data);
@@ -69,8 +63,7 @@ namespace TodoList.Core.Application.UseCases
         private void Validate(int id)
         {
             if (id <= Decimal.Zero)
-                _notificationContext.AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD,
-                    Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(id));
+                _notificationContext.AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD, Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(id));
         }
     }
 }

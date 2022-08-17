@@ -60,8 +60,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         {
             _logger.LogInformation("Inicia endpoint post todo.");
 
-            var useCaseResponse = await _createTodoUseCase.RunAsync(
-                _mapper.Map<CreateTodoUseCaseRequest>(request));
+            var useCaseResponse = await _createTodoUseCase.RunAsync(_mapper.Map<CreateTodoUseCaseRequest>(request));
 
             if (_notificationContext.HasErrorNotification)
                 return BadRequest();
@@ -70,8 +69,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
 
             _logger.LogInformation("Finaliza endepoint post todo.");
 
-            return Created($"/api/v1/todo/{response.Id}",
-                new Response<CreateTodoQuery>(data: response, succeeded: true));
+            return Created($"/api/v1/todo/{response.Id}", new Response<CreateTodoQuery>(data: response, succeeded: true));
         }
 
         [HttpDelete("{id}")]
@@ -105,8 +103,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         {
             _logger.LogInformation("Inicia endpoint put todo.");
 
-            await _updateTodoUseCase.RunAsync(
-                new UpdateTodoUseCaseRequest(id, request.Title, request.Done));
+            await _updateTodoUseCase.RunAsync(new UpdateTodoUseCaseRequest(id, request.Title, request.Done));
 
             _logger.LogInformation("Finaliza endpoint put todo.");
 
@@ -118,8 +115,7 @@ namespace TodoList.Presentation.WebApi.Controllers.v1
         {
             _logger.LogInformation("Inicia endpoint patch todo.");
 
-            await _setDoneTodoUseCase.RunAsync(
-                new SetDoneTodoUseCaseRequest(id, request.Done));
+            await _setDoneTodoUseCase.RunAsync(new SetDoneTodoUseCaseRequest(id, request.Done));
 
             _logger.LogInformation("Finaliza endpoint patch todo.");
 

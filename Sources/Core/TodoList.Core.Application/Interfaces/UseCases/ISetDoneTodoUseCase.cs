@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TodoList.Core.Application.Dtos.Requests;
 
 namespace TodoList.Core.Application.Interfaces.UseCases
 {
-    public interface ISetDoneTodoUseCase: IUseCase<SetDoneTodoUseCaseRequest>
+    public interface ISetDoneTodoUseCase : IUseCase<SetDoneTodoUseCaseRequest>
     {
     }
 }
