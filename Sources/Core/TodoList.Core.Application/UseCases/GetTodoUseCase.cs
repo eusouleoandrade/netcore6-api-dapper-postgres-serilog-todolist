@@ -47,8 +47,7 @@ namespace TodoList.Core.Application.UseCases
 
             if (todo is null)
             {
-                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD,
-                    Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", id));
+                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD, Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", id));
 
                 var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
                 _logger.LogWarning("Falha ao obter o todo: {data}", data);
@@ -66,8 +65,7 @@ namespace TodoList.Core.Application.UseCases
         private void Validade(int id)
         {
             if (id <= Decimal.Zero)
-                _notificationContext.AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD,
-                    Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(id));
+                _notificationContext.AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD, Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(id));
         }
     }
 }

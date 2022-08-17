@@ -15,14 +15,17 @@ namespace TodoList.Core.Application.UseCases
         private readonly ITodoRepositoryAsync _todoRepositoryAsync;
         private readonly NotificationContext _notificationContext;
         private readonly ILogger<UpdateTodoUseCase> _logger;
+        private readonly IGetTodoUseCase _getTodoUseCase;
 
         public UpdateTodoUseCase(ITodoRepositoryAsync todoRepositoryAsync,
             NotificationContext notificationContext,
-            ILogger<UpdateTodoUseCase> logger)
+            ILogger<UpdateTodoUseCase> logger,
+            IGetTodoUseCase getTodoUseCase)
         {
             _todoRepositoryAsync = todoRepositoryAsync;
             _notificationContext = notificationContext;
             _logger = logger;
+            _getTodoUseCase = getTodoUseCase;
         }
 
         public async Task RunAsync(UpdateTodoUseCaseRequest request)
@@ -39,25 +42,16 @@ namespace TodoList.Core.Application.UseCases
                 return;
             }
 
-            var todoDataBase = await _todoRepositoryAsync.GetAsync(request.Id);
+            var getTodoUseCaseResponse = await _getTodoUseCase.RunAsync(request.Id);
 
-            if (todoDataBase is null)
-            {
-                _notificationContext.AddErrorNotification(Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_COD,
-                    Msg.DADOS_DO_X0_X1_NAO_ENCONTRADO_TXT.ToFormat("Todo", request.Id));
-
-                var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
-                _logger.LogWarning("Erro ao obter o todo: {data}", data);
-
+            if (_notificationContext.HasErrorNotification || getTodoUseCaseResponse is null)
                 return;
-            }
 
-            var updated = await _todoRepositoryAsync.UpdateAsync(new Todo(request.Id, request.Title, request.Done));
+            var updated = await _todoRepositoryAsync.UpdateAsync(new Todo(getTodoUseCaseResponse.Id, request.Title, request.Done));
 
             if (!updated)
             {
-                _notificationContext.AddErrorNotification(Msg.FALHA_AO_ATUALIZAR_X0_COD,
-                    Msg.FALHA_AO_ATUALIZAR_X0_TXT.ToFormat("Todo"));
+                _notificationContext.AddErrorNotification(Msg.FALHA_AO_ATUALIZAR_X0_COD, Msg.FALHA_AO_ATUALIZAR_X0_TXT.ToFormat("Todo"));
 
                 var data = JsonSerializer.Serialize(_notificationContext.ErrorNotifications);
                 _logger.LogWarning("Erro ao atualizar todo: {data}", data);

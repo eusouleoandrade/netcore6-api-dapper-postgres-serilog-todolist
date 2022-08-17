@@ -23,13 +23,11 @@ namespace TodoList.Core.Application.Dtos.Requests
 
         private void Validate()
         {
-            if (Id == Decimal.Zero)
-                AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD,
-                Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(Id));
+            if (Id <= Decimal.Zero)
+                AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD, Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(Id));
 
             if (String.IsNullOrWhiteSpace(Title))
-                AddErrorNotification(Msg.X0_E_OBRIGATORIO_COD,
-                Msg.X0_E_OBRIGATORIO_COD.ToFormat("Title"));
+                AddErrorNotification(Msg.X0_E_OBRIGATORIO_COD, Msg.X0_E_OBRIGATORIO_COD.ToFormat("Title"));
         }
     }
 }

@@ -21,8 +21,7 @@ namespace TodoList.Core.Application.Dtos.Requests
         private void Validate()
         {
             if (Id <= Decimal.Zero)
-                AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD,
-                Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(Id));
+                AddErrorNotification(Msg.IDENTIFICADOR_X0_INVÁLIDO_COD, Msg.IDENTIFICADOR_X0_INVÁLIDO_TXT.ToFormat(Id));
         }
     }
 }
