@@ -9,9 +9,13 @@ namespace TodoList.Presentation.WebApi.Middlewares
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger _logger;
 
-        public ErrorHandlerMiddleware(RequestDelegate next)
-            => _next = next;
+        public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
+        {
+            _next = next;
+            _logger = logger;
+        }
 
         public async Task Invoke(HttpContext httpContext)
         {
@@ -21,21 +25,22 @@ namespace TodoList.Presentation.WebApi.Middlewares
             }
             catch (Exception error)
             {
-                var httpContextResponse = httpContext.Response;
+                string? method = httpContext.Request?.Method;
+                string? path = httpContext.Request?.Path.Value;
 
-                httpContextResponse.ContentType = "application/json";
+                _logger.LogError(error, "Finzaliza request com falha. Method: {method} - Path: {path}.", method, path);
 
                 string message;
 
                 switch (error)
                 {
                     case AppException:
-                        httpContextResponse.StatusCode = (int)HttpStatusCode.BadRequest;
+                        httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         message = error.Message;
 
                         break;
                     default:
-                        httpContextResponse.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         message = Msg.INTERNAL_SERVER_ERROR_TXT;
 
                         break;
@@ -43,9 +48,11 @@ namespace TodoList.Presentation.WebApi.Middlewares
 
                 var response = new Response(succeeded: false, message);
 
-                var result = JsonSerializer.Serialize(response);
+                var serializedResponse = JsonSerializer.Serialize(response);
 
-                await httpContextResponse.WriteAsync(result);
+                httpContext.Response.ContentType = "application/json";
+
+                await httpContext.Response.WriteAsync(serializedResponse);
             }
         }
     }
