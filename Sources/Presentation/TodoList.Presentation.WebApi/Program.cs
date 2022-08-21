@@ -24,6 +24,7 @@ if (app.Environment.IsDevelopment())
 else
     app.UseErrorHandlingExtension();
 
+app.UseHttpRequestBodyLoggerExtension();
 app.UseSwaggerExtension();
 app.UseHttpsRedirection();
 app.UseAuthorization();

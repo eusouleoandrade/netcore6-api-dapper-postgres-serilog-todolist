@@ -13,7 +13,7 @@ namespace TodoList.Infra.Persistence.Repositories
         where TId : struct
     {
         protected readonly NpgsqlConnection _connection;
-        private readonly ILogger<GenericRepositoryAsync<TEntity, TId>> _logger;
+        protected ILogger _logger;
 
         public GenericRepositoryAsync(IConfiguration configuration, ILogger<GenericRepositoryAsync<TEntity, TId>> logger)
         {

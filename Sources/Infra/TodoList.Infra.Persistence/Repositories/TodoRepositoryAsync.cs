@@ -11,8 +11,6 @@ namespace TodoList.Infra.Persistence.Repositories
 {
     public class TodoRepositoryAsync : GenericRepositoryAsync<Todo, int>, ITodoRepositoryAsync
     {
-        private readonly ILogger<TodoRepositoryAsync> _logger;
-
         public TodoRepositoryAsync(IConfiguration configuration, ILogger<TodoRepositoryAsync> logger)
             : base(configuration, logger)
         {
