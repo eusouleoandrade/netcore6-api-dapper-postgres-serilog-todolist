@@ -19,13 +19,10 @@ builder.Logging.AddFile("logs/todo-app.json", isJson: true);
 // Configure app
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-    app.UseDeveloperExceptionPage();
-else
-    app.UseErrorHandlingExtension();
-
+app.UseCorrelationIdHandleExtensions();
+//app.UseDeveloperExceptionPage();
+app.UseErrorHandlingExtension();
 app.UseHttpRequestBodyLoggerExtension();
-app.UseCorrelationIdExtensions();
 app.UseSwaggerExtension();
 app.UseHttpsRedirection();
 app.UseAuthorization();

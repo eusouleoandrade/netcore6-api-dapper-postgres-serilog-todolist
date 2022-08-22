@@ -22,6 +22,7 @@
             string? method = htppContext.Request?.Method;
             string? path = htppContext.Request?.Path.Value;
 
+            // Aplicar o method, path e body do request no logger
             _logger.LogInformation("Inicia request - Method: {method} - Path: {path} - Body: {body}", method, path, body);
 
             if (htppContext.Request == null)
