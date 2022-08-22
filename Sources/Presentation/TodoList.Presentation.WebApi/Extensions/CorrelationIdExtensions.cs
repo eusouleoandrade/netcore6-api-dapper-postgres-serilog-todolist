@@ -2,14 +2,14 @@
 
 namespace TodoList.Presentation.WebApi.Extensions
 {
-    public static class ErrorHandleExtension
+    public static class CorrelationIdExtensions
     {
-        public static void UseErrorHandlingExtension(this IApplicationBuilder app)
+        public static IApplicationBuilder UseCorrelationIdExtensions(this IApplicationBuilder app)
         {
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
 
-            app.UseMiddleware<ErrorHandlerMiddleware>();
+            return app.UseMiddleware<CorrelationIdMiddleware>();
         }
     }
 }

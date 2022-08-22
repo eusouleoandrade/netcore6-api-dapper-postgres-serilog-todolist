@@ -13,8 +13,7 @@ namespace TodoList.Presentation.WebApi.Filters
         public NotificationContextFilter(NotificationContext notificationContext)
             => _notificationContext = notificationContext;
 
-        public async Task OnResultExecutionAsync(ResultExecutingContext context,
-            ResultExecutionDelegate next)
+        public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
             if (_notificationContext.HasErrorNotification)
             {

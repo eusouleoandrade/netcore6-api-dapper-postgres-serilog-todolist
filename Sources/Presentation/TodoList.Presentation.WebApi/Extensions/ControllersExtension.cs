@@ -6,8 +6,10 @@ namespace TodoList.Presentation.WebApi.Extensions
     {
         public static void AddControllerExtension(this IServiceCollection services)
         {
-            services
-                .AddControllers(options => options.Filters.Add<NotificationContextFilter>());
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            services.AddControllers(options => options.Filters.Add<NotificationContextFilter>());
         }
     }
 }
