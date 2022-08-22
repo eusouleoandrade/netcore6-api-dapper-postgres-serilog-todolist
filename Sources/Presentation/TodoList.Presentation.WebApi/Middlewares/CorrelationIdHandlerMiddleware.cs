@@ -4,12 +4,12 @@ using TodoList.Presentation.WebApi.Options;
 
 namespace TodoList.Presentation.WebApi.Middlewares
 {
-    public class CorrelationIdMiddleware
+    public class CorrelationIdHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly CorrelationIdOptions _options;
 
-        public CorrelationIdMiddleware(RequestDelegate next, IOptions<CorrelationIdOptions> options)
+        public CorrelationIdHandlerMiddleware(RequestDelegate next, IOptions<CorrelationIdOptions> options)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
@@ -18,7 +18,7 @@ namespace TodoList.Presentation.WebApi.Middlewares
             _options = options.Value;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
             if (!httpContext.Request.Headers.TryGetValue(_options.Header, out StringValues correlationId))
             {
@@ -38,7 +38,12 @@ namespace TodoList.Presentation.WebApi.Middlewares
                 });
             }
 
-            return _next(httpContext);
+            // Aplicar o correlationId no logger
+            var logger = httpContext.RequestServices.GetRequiredService<ILogger<CorrelationIdHandlerMiddleware>>();
+            using (logger.BeginScope("{@CorrelationId}", correlationId))
+            {
+                await _next(httpContext);
+            }
         }
     }
 }
