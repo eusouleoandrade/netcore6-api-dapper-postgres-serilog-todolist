@@ -6,7 +6,10 @@ namespace TodoList.Presentation.WebApi.Extensions
     {
         public static void UseHttpRequestBodyLoggerExtension(this IApplicationBuilder app)
         {
-            app.UseMiddleware<HttpRequestBodyMiddleware>();
+            if (app == null)
+                throw new ArgumentNullException(nameof(app));
+
+            app.UseMiddleware<HttpRequestBodyLoggerMiddleware>();
         }
     }
 }

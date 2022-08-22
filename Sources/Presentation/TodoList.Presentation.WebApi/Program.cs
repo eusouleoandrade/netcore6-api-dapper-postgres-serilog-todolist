@@ -25,6 +25,7 @@ else
     app.UseErrorHandlingExtension();
 
 app.UseHttpRequestBodyLoggerExtension();
+app.UseCorrelationIdExtensions();
 app.UseSwaggerExtension();
 app.UseHttpsRedirection();
 app.UseAuthorization();

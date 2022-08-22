@@ -1,11 +1,11 @@
 ﻿namespace TodoList.Presentation.WebApi.Middlewares
 {
-    public class HttpRequestBodyMiddleware
+    public class HttpRequestBodyLoggerMiddleware
     {
         private readonly ILogger _logger;
         private readonly RequestDelegate _next;
 
-        public HttpRequestBodyMiddleware(ILogger<HttpRequestBodyMiddleware> logger, RequestDelegate next)
+        public HttpRequestBodyLoggerMiddleware(ILogger<HttpRequestBodyLoggerMiddleware> logger, RequestDelegate next)
         {
             this._logger = logger;
             this._next = next;
@@ -15,7 +15,8 @@
         {
             htppContext.Request.EnableBuffering();
 
-            var reader = new StreamReader(htppContext.Request.Body);
+            using var reader = new StreamReader(htppContext.Request.Body);
+
             string body = await reader.ReadToEndAsync();
 
             string? method = htppContext.Request?.Method;
@@ -23,7 +24,10 @@
 
             _logger.LogInformation("Inicia request - Method: {method} - Path: {path} - Body: {body}", method, path, body);
 
-            htppContext.Request.Body.Position = 0L;
+            if (htppContext.Request == null)
+                throw new ArgumentNullException(nameof(htppContext));
+            else
+                htppContext.Request.Body.Position = 0L;
 
             await _next(htppContext);
         }
