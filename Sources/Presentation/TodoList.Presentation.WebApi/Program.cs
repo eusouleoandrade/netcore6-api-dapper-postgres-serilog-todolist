@@ -11,6 +11,7 @@ builder.Services.AddControllerExtension();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerExtension();
 builder.Services.AddNotificationContextExtension();
+builder.Services.AddCorrelationIdContextExtension();
 builder.Services.AddApiVersioningExtension();
 
 // Configure logs

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using TodoList.Core.Application.Contexts;
 using TodoList.Presentation.WebApi.Options;
 
 namespace TodoList.Presentation.WebApi.Middlewares
@@ -18,15 +19,18 @@ namespace TodoList.Presentation.WebApi.Middlewares
             _options = options.Value;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext, CorrelationIdContext correlationIdContext)
         {
             if (!httpContext.Request.Headers.TryGetValue(_options.Header, out StringValues correlationId))
             {
                 correlationId = Guid.NewGuid().ToString();
             }
 
-            // Aplica o correlationId na propriedade TraceIdentifier para obter em injeções httpContext
+            // Aplica o correlationId na propriedade TraceIdentifier para obter o valor em injeções HttpContext
             httpContext.TraceIdentifier = correlationId;
+
+            // Aplica o correlationId no CorrelationIdContext para obter o valor em injeções CorrelationIdContext
+            correlationIdContext.CorrelationId = correlationId;
 
             // Aplica o correlationId ao cabeçalho de resposta para rastreamento lado cliente
             if (_options.IncludeInResponse)
