@@ -1,4 +1,4 @@
-﻿namespace TodoList.Core.Application.Contexts
+﻿namespace TodoList.Infra.Logger.Contexts
 {
     public class CorrelationIdContext
     {

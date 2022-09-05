@@ -1,4 +1,4 @@
-﻿using TodoList.Core.Application.Contexts;
+﻿using TodoList.Infra.Logger.Contexts;
 
 namespace TodoList.Presentation.WebApi.Extensions
 {

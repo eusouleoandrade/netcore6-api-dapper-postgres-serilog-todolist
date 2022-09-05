@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using TodoList.Core.Application.Contexts;
+using TodoList.Infra.Logger.Contexts;
 using TodoList.Presentation.WebApi.Options;
 
 namespace TodoList.Presentation.WebApi.Middlewares
