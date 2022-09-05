@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TodoList.Core.Application.Contexts;
 using TodoList.Core.Application.Dtos.Queries;
 using TodoList.Core.Application.Dtos.Wrappers;
+using TodoList.Infra.Logger.Contexts;
 using TodoList.Presentation.WebApi.Controllers.Common;
 
 namespace TodoList.Presentation.WebApi.Controllers.v2
