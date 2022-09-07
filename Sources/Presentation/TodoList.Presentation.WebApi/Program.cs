@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistenceLayer();
 builder.Services.AddApplicationLayer();
 builder.Services.AddControllerExtension();
+builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerExtension();
 builder.Services.AddNotificationContextExtension();
@@ -22,6 +23,8 @@ var app = builder.Build();
 
 app.UseCorrelationIdHandleExtensions();
 //app.UseDeveloperExceptionPage();
+
+app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseErrorHandlingExtension();
 app.UseHttpRequestBodyLoggerExtension();
 app.UseSwaggerExtension();
