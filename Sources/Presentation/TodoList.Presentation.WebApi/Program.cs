@@ -24,7 +24,10 @@ var app = builder.Build();
 app.UseCorrelationIdHandleExtensions();
 //app.UseDeveloperExceptionPage();
 
-app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(option => option.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+
 app.UseErrorHandlingExtension();
 app.UseHttpRequestBodyLoggerExtension();
 app.UseSwaggerExtension();
